@@ -1,16 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
 
-    <h3>
-        <?=_e("Categories")?>
-        <?if ($user_location) :?>
-            <small><?=$user_location->name?></small>
-        <?endif?>
-    </h3>
+<div class="bgban"></div>
     <div class="row">
         <?$i=0; foreach($categs as $c):?>
             <?if($c['id_category_parent'] == 1 AND $c['id_category'] != 1 AND ! in_array($c['id_category'], $hide_categories)):?>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <div class="panel panel-home-categories">
                         <div class="panel-heading">
                             <a title="<?=HTML::chars($c['name'])?>" href="<?=Route::url('list', array('category'=>$c['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>"><?=mb_strtoupper($c['name']);?></a>
@@ -32,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                <? $i++; if ($i%3 == 0) echo '<div class="clear"></div>';?>
+                <? $i++; if ($i%3 == 0) echo '<div class="clear hidden-sm"></div>';?>
             <?endif?>
         <?endforeach?>
     </div>
@@ -51,27 +46,50 @@
                 <small><?=$user_location->name?></small>
             <?endif?>
         </h3>
-        <div class="row">
-            <?$i=0; foreach($ads as $ad):?>
-                <div class="col-md-3">
-                    <div class="thumbnail latest_ads">
-                        <a href="<?=Route::url('ad', array('category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"  class="min-h">
-                            <?if($ad->get_first_image()!== NULL):?>
-                                <?=HTML::picture($ad->get_first_image(), ['w' => 132, 'h' => 132], ['992px' => ['w' => '132', 'h' => '132'], '320px' => ['w' => '648', 'h' => '648']], ['alt' => HTML::chars($ad->title)])?>
-                            <?elseif( ($icon_src = $ad->category->get_icon()) !== FALSE):?>
-                                <?=HTML::picture($icon_src, ['w' => 132, 'h' => 132], ['992px' => ['w' => '132', 'h' => '132'], '320px' => ['w' => '648', 'h' => '648']], ['alt' => HTML::chars($ad->title)])?>
-                            <?else:?>
-                                <img data-src="holder.js/179x179?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">
-                            <?endif?>
-                        </a>
-                        <div class="caption">
-                            <h5><a href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"><?=$ad->title?></a></h5>
-                            <p ><?=Text::limit_chars(Text::removebbcode($ad->description), 30, NULL, TRUE)?></p>
-                        </div>
-                    </div>
+
+    <?$i=0; foreach($ads as $ad):?>
+        <article class="panel ltest clearfix">
+            <div class="panel-body">
+                <div class="picture">
+                  <a class="pull-left" title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
+                      <figure>
+                          <?if($ad->get_first_image() !== NULL):?>
+                              <img src="<?=Core::imagefly($ad->get_first_image(),100,100)?>" alt="<?=HTML::chars($ad->title)?>" />
+                          <?elseif(( $icon_src = $ad->category->get_icon() )!==FALSE ):?>
+                              <img src="<?=Core::imagefly($icon_src,150,150)?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>" />
+                          <?elseif(( $icon_src = $ad->location->get_icon() )!==FALSE ):?>
+                              <img src="<?=Core::imagefly($icon_src,150,150)?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>" />
+                          <?else:?>
+                              <img data-src="holder.js/100x100?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>">
+                          <?endif?>
+                      </figure>
+                  </a>
                 </div>
-            <?endforeach?>
-        </div>
+                <h3>
+                  <a title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
+                      <?=$ad->title?>
+                  </a>
+                </h3>
+                <ul>
+                  <?if (core::request('sort') == 'distance' AND Model_User::get_userlatlng()) :?>
+                      <li><strong><?=_e('Distance');?>:</strong> <?=i18n::format_measurement($ad->distance)?></li>
+                  <?endif?>
+                  <?if ($ad->price!=0){?>
+                      <li class="price text-success"><strong><span class="price-curry"><?=i18n::money_format( $ad->price)?></span></strong></li>
+                  <?}?>
+                  <?if ($ad->price==0 AND core::config('advertisement.free')==1){?>
+                      <li class="price"><?=_e('Price');?>: <strong><?=_e('Free');?></strong></li>
+                  <?}?>
+                </ul>
+                <p>
+                <?if(core::config('advertisement.description')!=FALSE):?>
+                    <?=Text::limit_chars(Text::removebbcode($ad->description), 255, NULL, TRUE);?>
+                <?endif?>
+                    <a title="<?=HTML::chars($ad->seotitle);?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"><i class="glyphicon glyphicon-share"></i> <?=_e('Read more')?></a>
+                </p>
+            </div>
+        </article>
+    <?endforeach?>
 
 <?endif?>
 

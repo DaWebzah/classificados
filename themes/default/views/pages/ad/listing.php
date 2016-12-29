@@ -86,26 +86,28 @@
         </ul>
     </div>
     <div class="clearfix"></div>
+    <br>
 
   <?foreach($ads as $ad ):?>
       <?if($ad->featured >= Date::unix2mysql(time())):?>
-          <article class="list well clearfix featured ">
+          <article class="panel list clearfix featured ">
               <span class="label label-danger pull-right"><?=_e('Featured')?></span>
       <?else:?>
-          <article class="list well clearfix">
+          <article class="panel list clearfix">
       <?endif?>
-          <div class="pull-right favorite" id="fav-<?=$ad->id_ad?>">
-              <?if (Auth::instance()->logged_in()):?>
-                  <?$fav = Model_Favorite::is_favorite($user,$ad);?>
-                  <a data-id="fav-<?=$ad->id_ad?>" class="add-favorite <?=($fav)?'remove-favorite':''?>" title="<?=__('Add to Favorites')?>" href="<?=Route::url('oc-panel', array('controller'=>'profile', 'action'=>'favorites','id'=>$ad->id_ad))?>">
-                      <i class="glyphicon glyphicon-heart<?=($fav)?'':'-empty'?>"></i>
-                  </a>
-              <?else:?>
-                  <a data-toggle="modal" data-dismiss="modal" href="<?=Route::url('oc-panel',array('directory'=>'user','controller'=>'auth','action'=>'login'))?>#login-modal">
-                      <i class="glyphicon glyphicon-heart-empty"></i>
-                  </a>
-              <?endif?>
-          </div>
+          <div class="panel-body">
+              <div class="pull-right favorite" id="fav-<?=$ad->id_ad?>">
+                  <?if (Auth::instance()->logged_in()):?>
+                      <?$fav = Model_Favorite::is_favorite($user,$ad);?>
+                      <a data-id="fav-<?=$ad->id_ad?>" class="add-favorite <?=($fav)?'remove-favorite':''?>" title="<?=__('Add to Favorites')?>" href="<?=Route::url('oc-panel', array('controller'=>'profile', 'action'=>'favorites','id'=>$ad->id_ad))?>">
+                          <i class="glyphicon glyphicon-heart<?=($fav)?'':'-empty'?>"></i>
+                      </a>
+                  <?else:?>
+                      <a data-toggle="modal" data-dismiss="modal" href="<?=Route::url('oc-panel',array('directory'=>'user','controller'=>'auth','action'=>'login'))?>#login-modal">
+                          <i class="glyphicon glyphicon-heart-empty"></i>
+                      </a>
+                  <?endif?>
+              </div>
 
           <?if($ad->id_location != 1):?>
               <a href="<?=Route::url('list',array('location'=>$ad->location->seoname))?>" title="<?=HTML::chars($ad->location->name)?>">
@@ -119,11 +121,12 @@
               </a>
           </h2>
 
-          <div class="picture">
-              <a class="pull-left" title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
+          <div class="row">
+          <div class="col-sm-3">
+              <a title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
                   <figure>
                       <?if($ad->get_first_image() !== NULL):?>
-                          <img src="<?=Core::imagefly($ad->get_first_image(),150,150)?>" alt="<?=HTML::chars($ad->title)?>" />
+                          <img src="<?=Core::imagefly($ad->get_first_image(),440,440)?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>" />
                       <?elseif(( $icon_src = $ad->category->get_icon() )!==FALSE ):?>
                           <img src="<?=Core::imagefly($icon_src,150,150)?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>" />
                       <?elseif(( $icon_src = $ad->location->get_icon() )!==FALSE ):?>
@@ -134,19 +137,19 @@
                   </figure>
               </a>
           </div>
-
+          <div class="col-sm-9">
           <ul>
               <?if (core::request('sort') == 'distance' AND Model_User::get_userlatlng()) :?>
-                  <li><b><?=_e('Distance');?>:</b> <?=i18n::format_measurement($ad->distance)?></li>
+                  <li><strong><?=_e('Distance');?>:</strong> <?=i18n::format_measurement($ad->distance)?></li>
               <?endif?>
               <?if ($ad->published!=0){?>
-                  <li><b><?=_e('Publish Date');?>:</b> <?=Date::format($ad->published, core::config('general.date_format'))?></li>
+                  <li class="text-muted"><?=Date::format($ad->published, core::config('general.date_format'))?></li>
               <? }?>
               <?if ($ad->price!=0){?>
-                  <li class="price"><?=_e('Price');?>: <b><span class="price-curry"><?=i18n::money_format( $ad->price)?></span></b></li>
+                  <li class="price text-success"><strong><span class="price-curry"><?=i18n::money_format( $ad->price)?></span></strong></li>
               <?}?>
               <?if ($ad->price==0 AND core::config('advertisement.free')==1){?>
-                  <li class="price"><?=_e('Price');?>: <b><?=_e('Free');?></b></li>
+                  <li class="price"><?=_e('Price');?>: <strong><?=_e('Free');?></strong></li>
               <?}?>
           </ul>
 
@@ -154,7 +157,7 @@
             <p><?=Text::limit_chars(Text::removebbcode($ad->description), 255, NULL, TRUE);?></p>
           <?endif?>
 
-          <a title="<?=HTML::chars($ad->seotitle);?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"><i class="glyphicon glyphicon-share"></i><?=_e('Read more')?></a>
+          <a title="<?=HTML::chars($ad->seotitle);?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"><i class="glyphicon glyphicon-share"></i> <?=_e('Read more')?></a>
           <?if ($user !== NULL AND ($user->is_admin() OR $user->is_moderator())):?>
               <br />
               <div class="toolbar btn btn-primary btn-xs"><i class="glyphicon glyphicon-cog"></i>
@@ -184,6 +187,9 @@
               </div>
           </div>
           <?endif?>
+        </div>
+        </div>
+      </div>
       </article>
 
   <?endforeach?>

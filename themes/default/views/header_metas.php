@@ -3,17 +3,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <?endif?>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?=$title?></title>
+<title><?=$title?> - Anúncios Grátis em Florianópolis</title>
 <meta name="keywords" content="<?=$meta_keywords?>" >
 <meta name="description" content="<?=HTML::chars($meta_description)?>" >
-<meta name="copyright" content="<?=HTML::chars($meta_copyright)?>" >
 <?if (isset($_SERVER['SERVER_ADDR'])):?>
 <meta name="server_addr" content="<?=$_SERVER['SERVER_ADDR']?>">
 <?endif?>
 <?if (Theme::get('premium')==1):?>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <?else:?>
-<meta name="author" content="open-classifieds.com">
+<meta name="author" content="classificados.florianopol.is">
 <?endif?>
 <meta name="application-name" content="<?=core::config('general.site_name')?>" data-baseurl="<?=core::config('general.base_url')?>">
 <?if (core::config('general.landing_page')!=NULL
@@ -75,7 +74,7 @@
 <meta property="logbee:imgurl" content="<?=Controller::$image?>"/>
 <?endif?>
 
-<link rel="shortcut icon" href="<?=(Theme::get('favicon_url')!='') ? Theme::get('favicon_url') : core::config('general.base_url').'images/favicon.ico'?>">
+<link rel="shortcut icon" type="image/png" href="<?=(Theme::get('favicon_url')!='') ? Theme::get('favicon_url') : core::config('general.base_url').'images/favicon.png'?>">
 <?if(Theme::get('apple-touch-icon')!=NULL):?>
 <link rel="apple-touch-icon" href="<?=(Theme::get('apple-touch-icon')) ?>">
 <?endif?>

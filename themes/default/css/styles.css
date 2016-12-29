@@ -1,14 +1,38 @@
-/* My changes to the original */
-
 /**
  * Custom theme styles that overwrites theme
  */
 
 body {
     padding-top: 80px;
-    padding-bottom: 40px;
     background-color: #fafafa;
+    font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+a {
+    color: #365462;
+}
+
+.bgban {
+    position: absolute;
+    top: -30px;
+    left: -50%;
+    height: 562px;
+    width: 300%;
+    background-image: url(collage-bg2-sm-faGrad.jpg);
+    background-position: center top;
+    background-repeat: repeat-x;
+}
+html, body {
+    overflow-x: hidden;
+}
+
+h1, h2, h3, .navbar-brand {
+  font-family: 'Oswald', sans-serif;
+}
+ul.nav > li > a {
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif;
+}
+
 .ml-10{margin-left: 10px;}
 .body_fixed{padding-top: 0px;}
 .sidebar-nav {
@@ -19,9 +43,10 @@ body {
 .btn-header-group{margin-right: -15px;}
 ol, ul {
     list-style-type: none;
+    padding: 0;
 }
 .text-description {
-    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 .text-description ul {
     list-style-type: disc;
@@ -91,7 +116,7 @@ ol, ul {
 }
 .mr-new{padding-left: 150px;}
 .price{
-	color: rgb(192, 79, 79);
+    font-size: 120%;
 }
 
 .latest_ads{
@@ -144,11 +169,7 @@ ol, ul {
 .dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
 .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
 
-.navbar-inverse {background-color: #2fa3e6; border-color: #285e8e;}
-.navbar-inverse .navbar-nav>li>a{color:#fff;}
-.navbar-inverse .navbar-brand {color: #fff;}
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {color: #fff; background-color: #4EB7F3;}
-.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus {color: #fff;background-color: #4EB7F3;}
+
 
 /* collapsable categories selector*/
 .collapsed {}
@@ -174,33 +195,35 @@ ol, ul {
 .carousel-control{width: 6%;}
 .carousel-control.right, .carousel-control.left{background-image: none;}
 /* no different badge styles in boot3*/
-.badge-success{background-color: #5cb85c;}
+.badge-success{}
 .carousel .carousel-inner .item img {
   width: 100%;
 }
 
 .caption{word-wrap:break-word;}
-.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus{background-color: #2fa3e6;}
 
-.favorite i {font-size:20px;color:#888888;}
+
+.favorite i {font-size:24px;color:#888888;}
 .favorite .remove-favorite i {color:#C9302C;}
+.page-header .favorite i {font-size:28px;}
 
-.navbar-brand h1 {font-size: 18px;line-height:20px; margin:0;}
 
 .min-h{min-height: 119px!important; display:block;}
 
 .panel-home-categories {
-    border: 1px solid #e3e3e3;
+    border-radius: 0;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 .panel-home-categories > .panel-heading {
-    background-color: #2fa3e6;
-    color: #FFFFFF;
-    font-size: 17px;
+    background-color: #eff4f6;
+    text-transform: lowercase;
+    font-size: 18px;
+    font-weight: 500;
     padding: 5px 15px;
+    border-radius: 0;
 }
-.panel-home-categories > .panel-heading a {
-    color: #FFFFFF;
-}
+
+
 .panel-home-categories > .panel-body > .list-group {
     margin-bottom: 0;
 }
@@ -211,6 +234,11 @@ ol, ul {
 .panel-home-categories > .panel-body > .list-group > .list-group-item:first-child {
     padding-top: 0;
 }
+.panel-home-categories a {
+    color: #25434c;
+}
+
+
 .panel-sidebar {
     border: 1px solid #e3e3e3;
 }
@@ -278,4 +306,100 @@ img#captcha_img_publish_new {
   #main-content {
     min-height: 800px;
   }
+}
+
+/* Added */
+.navbar {
+    background-image: linear-gradient(to right,#2d3339 0,#365462 46%,#3e5554 60%,#42554d 68%,#573d4e 100%);
+}
+.navbar-collapse.collapsing, .navbar-collapse.in {
+  background-color: #2d3339;
+}
+
+.navbar-brand::before {
+  width: 17px;
+  height: 17px;
+  background: url(logo152-W.png) no-repeat center;
+  content: '';
+  opacity: .6;
+  background-size: 17px 17px;
+  display: inline-block;
+}
+.navbar-brand:hover::before {
+  opacity: 1;
+}
+
+.navbar-btn .fa-bell {
+    color: #ec971f;
+}
+.navbar-btn .badge.ntf {
+    background-color: #eea236;
+}
+
+.page-header {
+    border-bottom: none;
+}
+.page-header h1 .label {
+    font-size: 65%;
+}
+
+article.panel {
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+article.ltest h3 {
+    margin-top: 0;
+}
+article.list h2 {
+    margin-top: 10px;
+}
+
+article.single {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 25px;
+}
+@media all and (min-width: 768px) {
+    article.single {
+        background-color: #fff;
+        border-bottom: none;
+        padding: 0 10px 20px;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.ctc-btns {
+    text-align: center;
+}
+.ctc-btns .label-default {
+    font-size: 13px;
+}
+.ctc-btns .btn-default {
+    font-size: 110%;
+}
+.ctc-btns .btn-default i {
+    font-size: 18px;
+    margin-right: 7px;
+}
+
+.fileinput-new .thumbnail {
+    background: url(uppx.png) center no-repeat #fff;
+    background-size: 84px 50px;
+}
+
+footer {
+    background-color: #2d3339;
+    color: #9d9d9d;
+    min-height: 60px;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+footer a {
+    color: #9d9d9d;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.75);
+}
+footer a:hover {
+    color: #fff;
+    text-decoration: none;
 }

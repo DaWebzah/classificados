@@ -8,6 +8,8 @@
 
 <?else:?>
     <?=Form::errors()?>
+<article class="single clearfix">
+
     <div class="page-header">
         <div class="pull-right favorite" id="fav-<?=$ad->id_ad?>">
             <?if (Auth::instance()->logged_in()):?>
@@ -21,7 +23,12 @@
                 </a>
             <?endif?>
         </div>
-        <h1><?= $ad->title;?></h1>
+        <h1>
+            <?= $ad->title;?>
+            <?if ($ad->price>0):?>
+            <span class="label label-warning"><span class="price-curry"><?=i18n::money_format( $ad->price)?></span></span>
+            <?endif?>
+        </h1>
     </div>
 
     <!-- PAYPAL buttons to featured and to top -->
@@ -52,7 +59,7 @@
                 <div class="row">
                     <?foreach ($images as $path => $value):?>
                         <?if( isset($value['thumb']) AND isset($value['image']) ):?>
-                            <div class="col-md-3">
+                            <div class="col-sm-3">
                                 <a href="<?=$value['image']?>" class="thumbnail gallery-item" data-gallery>
                                     <?=HTML::picture($value['image'], array('w' => 280, 'h' => 280), array('1200px' => array('w' => '125', 'h' => '125'), '992px' => array('w' => '96', 'h' => '96'), '768px' => array('w' => '939', 'h' => '939'), '480px' => array('w' => '727', 'h' => '727'), '320px' => array('w' => '440', 'h' => '440')), array('alt' => HTML::chars($ad->title), 'class' => 'img-responsive img-rounded'))?>
                                 </a>
@@ -64,38 +71,37 @@
         </div>
     <?endif?>
 
-    <div class="well ">
-        <?if ($ad->price>0):?>
-            <span class="label label-danger"><?=_e('Price');?> : <span class="price-curry"><?=i18n::money_format( $ad->price)?></span></span>
-        <?endif?>
-        <?if ($ad->price==0 AND core::config('advertisement.free')==1):?>
-            <span class="label label-danger"><?=_e('Price');?> : <?=_e('Free');?></span>
-        <?endif?>
-        <?if ($ad->id_location != 1):?>
-            <span class="label label-default"><?=$ad->location->name?></span>
-        <?endif?>
-        <a class="label label-default" href="<?=Route::url('profile',  array('seoname'=>$ad->user->seoname))?>"><?=$ad->user->name?></a>
-        <div class="pull-right">
-            <span class="label label-info"><?= Date::format($ad->published, core::config('general.date_format'))?></span>
-            <?if(core::config('advertisement.count_visits')==1):?>
-                <span class="label label-info"><?=$hits?> <?=_e('Hits')?></span>
+
+
+        <h4><?= $ad->title;?></h4>
+        <strong class="text-muted"><?=_e('Published');?>:</strong> <span><?= Date::format($ad->published, core::config('general.date_format'))?></span>
+        <div>
+            <?if ($ad->price>0):?>
+                <strong class="text-muted"><?=_e('Price');?>: <span class="price-curry text-success"><?=i18n::money_format( $ad->price)?></span></strong>
+            <?endif?>
+            <?if ($ad->price==0 AND core::config('advertisement.free')==1):?>
+                <span class="label label-danger"><?=_e('Price');?> : <?=_e('Free');?></span>
+            <?endif?>
+            <?if ($ad->id_location != 1):?>
+                <span class="label label-default"><?=$ad->location->name?></span>
             <?endif?>
         </div>
-    </div>
 
-    <br/>
-
-    <div>
-        <?if(core::config('advertisement.description')!=FALSE):?>
-          <div class="text-description"><?=Text::bb2html($ad->description,TRUE)?></div>
-        <?endif?>
-        <?if (Valid::url($ad->website)):?>
-            <p><a href="<?=$ad->website?>" rel="nofollow" target="_blank">><?=$ad->website?></a></p>
-        <?endif?>
-        <?if (core::config('advertisement.address')):?>
-            <p><?=$ad->address?></p>
-        <?endif?>
-     </div>
+        <br>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="text-description">
+            <?if(core::config('advertisement.description')!=FALSE):?>
+              <p><?=Text::bb2html($ad->description,TRUE)?></p>
+            <?endif?>
+            <?if (Valid::url($ad->website)):?>
+                <p><a href="<?=$ad->website?>" rel="nofollow" target="_blank">><?=$ad->website?></a></p>
+            <?endif?>
+            <?if (core::config('advertisement.address')):?>
+                <strong class="text-muted"><?=_e('Address');?>:</strong>
+                <p><?=$ad->address?></p>
+            <?endif?>
+        </div>
 
     <?if((core::config('payment.paypal_seller')==1 OR Core::config('payment.stripe_connect')==1) AND $ad->price != NULL AND $ad->price > 0):?>
         <?if(core::config('payment.stock')==0 OR ($ad->stock > 0 AND core::config('payment.stock')==1)):?>
@@ -107,22 +113,32 @@
             <?endif?>
         <?endif?>
     <?endif?>
+    </div>
+    <div class="col-sm-4 ctc-btns">
+        <div class="btn-group-vertical" role="group">
+            <a class="label label-default btn" href="<?=Route::url('profile',  array('seoname'=>$ad->user->seoname))?>"><i class="glyphicon glyphicon-user"></i> <?=$ad->user->name?></a>
 
-    <hr />
-
+            <?if(core::config('advertisement.count_visits')==1):?>
+                <span class="label label-info"><?=$hits?> <?=_e('Hits')?></span>
+            <?endif?>
     <?if ($ad->can_contact()):?>
         <?if ((core::config('advertisement.login_to_contact') == TRUE OR core::config('general.messaging') == TRUE) AND !Auth::instance()->logged_in()) :?>
-            <a class="btn btn-success" data-toggle="modal" data-dismiss="modal" href="<?=Route::url('oc-panel',array('directory'=>'user','controller'=>'auth','action'=>'login'))?>#login-modal">
-                <i class="glyphicon glyphicon-envelope"></i>
-                <?=_e('Send Message')?>
+
+            <a class="btn btn-default" data-toggle="modal" data-dismiss="modal" href="<?=Route::url('oc-panel',array('directory'=>'user','controller'=>'auth','action'=>'login'))?>#login-modal">
+                <i class="glyphicon glyphicon-envelope pull-left"></i> <?=_e('Send Message')?>
             </a>
         <?else :?>
-            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#contact-modal"><i class="glyphicon glyphicon-envelope"></i> <?=_e('Send Message')?></button>
+            <a class="btn btn-default" type="button" data-toggle="modal" data-target="#contact-modal" href="#"><i class="glyphicon glyphicon-envelope pull-left"></i> <?=_e('Send Message')?></a>
         <?endif?>
 
         <?if (core::config('advertisement.phone')==1 AND strlen($ad->phone)>1):?>
-            <a class="btn btn-warning" href="tel:<?=$ad->phone?>"><?=_e('Phone').': '.$ad->phone?></a>
+            <a class="btn btn-default" href="tel:<?=$ad->phone?>"><i class="glyphicon glyphicon-earphone pull-left"></i> <?=$ad->phone?></a>
         <?endif?>
+        </div>
+    </div>
+
+  </div>
+
 
         <div id="contact-modal" class="modal fade">
             <div class="modal-dialog">
@@ -207,11 +223,12 @@
         </div>
     <?endif?>
 
-    <div class="clearfix"></div><br>
+</article>
     <?if(core::config('advertisement.sharing')==1):?>
-        <?=View::factory('share')?>
-        <div class="clearfix"></div><br>
+    <div class="shre breadcrumb"><?=View::factory('share')?></div>
+    <br>
     <?endif?>
+
     <?=$ad->qr()?>
     <?=$ad->map()?>
     <?=$ad->related()?>

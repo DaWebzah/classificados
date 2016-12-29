@@ -45,16 +45,19 @@
                       <?=$content?>
                     </div>
                 </div>
-                <?= FORM::open(Route::url('search'), array('class'=>'col-md-3', 'method'=>'GET', 'action'=>''))?>
+                <div class="col-md-3">
+                <?= FORM::open(Route::url('search'), array('class'=>'srch', 'method'=>'GET', 'action'=>''))?>
                     <div class="form-group">
                         <input type="text" name="search" class="search-query form-control" placeholder="<?=__('Search')?>">
                     </div>
                 <?= FORM::close()?>
                 <?=View::fragment('sidebar_front','sidebar')?>
             <?endif?>
+                </div>
         </div>
-        <?=$footer?>
+
     </div>
+  <?=$footer?>
 
   <?=Theme::scripts($scripts,'footer')?>
   <?=Theme::scripts($scripts,'async_defer', 'default', ['async' => '', 'defer' => ''])?>
